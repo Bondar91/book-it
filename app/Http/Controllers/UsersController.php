@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\User;
 
 class UsersController extends Controller
 {
@@ -22,9 +24,24 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        //
+      $user = User::create([
+        'first_name' => $request->input('first_name'),
+        'last_name' => $request->input('last_name'),
+        'login' => $request->input('login'),
+        'email' => $request->input('email'),
+        'password' => bcrypt($request->input('password')),
+        'city' => $request->input('city'),
+        'street' => $request->input('street'),
+        'post_code' => $request->input('post_code'),
+        'country_iso' => $request->input('country_iso'),
+      ]);
+
+      return response()->json([
+        'status' => true,
+        'data' => $user
+      ]);
     }
 
     /**
